@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cenários Financeiros - Cooperativa ReciclArte</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #f5f5f5;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 10px 0;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 16px 16px 24px 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .intro {
+      margin-bottom: 16px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 24px;
+      margin-top: 10px;
+    }
+
+    .card {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 14px 14px;
+      border: 1px solid #e0e0e0;
+      margin-bottom: 14px;
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+    }
+
+    label {
+      display: block;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 6px 8px;
+      margin-top: 2px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .small-inputs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .small-inputs label {
+      font-size: 11px;
+    }
+
+    .small-inputs input[type="number"] {
+      font-size: 11px;
+      padding: 4px 6px;
+    }
+
+    .btn-row {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 8px 14px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      background: #1976d2;
+      color: #fff;
+      font-size: 14px;
+      flex: 1 1 140px;
+    }
+
+    button.secondary {
+      background: #757575;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      min-width: 420px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 6px 8px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #eeeeee;
+    }
+
+    th:first-child,
+    td:first-child {
+      text-align: left;
+    }
+
+    .highlight {
+      font-weight: bold;
+    }
+
+    .chart-container {
+      margin-top: 14px;
+      height: 190px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      background: #ffffff;
+      padding: 10px;
+    }
+
+    .bar {
+      width: 22%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .bar-inner {
+      width: 100%;
+      transition: height 0.3s ease;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .bar-label {
+      margin-top: 4px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .bar-value {
+      font-size: 11px;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    .legend {
+      font-size: 12px;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .line-chart-wrapper {
+      margin-top: 14px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      background: #ffffff;
+      padding: 10px;
+    }
+
+    #linha-cenarios {
+      width: 100%;
+      height: 220px;
+      display: block;
+    }
+
+    .footer-text {
+      margin-top: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #555;
+    }
+
+    @media (max-width: 800px) {
+      body {
+        padding: 8px;
+      }
+
+      .page {
+        padding: 12px 10px 18px 10px;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .card {
+        padding: 10px 10px;
+      }
+
+      .chart-container {
+        height: 170px;
+      }
+
+      #linha-cenarios {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Cenários Financeiros para a Cooperativa ReciclArte</h1>
+    <div class="intro">
+      A página apresenta construção de cenários financeiros otimista, realista e pessimista com base em hipóteses de volume, preços, custos, produtividade e marketing. Os números têm uso didático e não representam dados da cooperativa.
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h3>Entradas do cenário base</h3>
+          <p style="font-size: 13px; margin-bottom: 8px;">
+            O cenário realista usa os dados a seguir como base. Os demais cenários aplicam ajustes nas premissas para simulação.
+          </p>
+
+          <label for="volume">Volume coletado (toneladas por mês)</label>
+          <input id="volume" type="number" value="80" min="0" step="1" />
+
+          <label for="preco">Preço médio de venda por tonelada (R$)</label>
+          <input id="preco" type="number" value="900" min="0" step="10" />
+
+          <label for="custoVar">Custo variável por tonelada (R$)</label>
+          <input id="custoVar" type="number" value="550" min="0" step="10" />
+
+          <label for="custoFixo">Custos fixos mensais (R$)</label>
+          <input id="custoFixo" type="number" value="30000" min="0" step="500" />
+
+          <label for="marketing">Investimento mensal em marketing (R$)</label>
+          <input id="marketing" type="number" value="3000" min="0" step="100" />
+
+          <label for="produtividade">Ganho de produtividade com melhorias e JIT (%)</label>
+          <input id="produtividade" type="number" value="10" min="-50" max="100" step="1" />
+
+          <div class="btn-row">
+            <button onclick="recalcular()">Calcular cenários</button>
+            <button class="secondary" onclick="resetar()">Restaurar valores padrão</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Ajustes de cada cenário</h3>
+          <p style="font-size: 13px; margin-bottom: 6px;">
+            Os percentuais representam alterações em relação ao cenário base. O foco recai sobre volume, preço e custo variável.
+          </p>
+
+          <div class="small-inputs">
+            <div>
+              <strong style="font-size: 12px;">Otimista</strong>
+              <label>Volume (%)</label>
+              <input id="opt-vol" type="number" value="20" step="1" />
+              <label>Preço (%)</label>
+              <input id="opt-preco" type="number" value="5" step="1" />
+              <label>Custos variáveis (%)</label>
+              <input id="opt-cv" type="number" value="-5" step="1" />
+            </div>
+            <div>
+              <strong style="font-size: 12px;">Realista</strong>
+              <label>Volume (%)</label>
+              <input id="real-vol" type="number" value="0" step="1" />
+              <label>Preço (%)</label>
+              <input id="real-preco" type="number" value="0" step="1" />
+              <label>Custos variáveis (%)</label>
+              <input id="real-cv" type="number" value="0" step="1" />
+            </div>
+            <div>
+              <strong style="font-size: 12px;">Pessimista</strong>
+              <label>Volume (%)</label>
+              <input id="pes-vol" type="number" value="-25" step="1" />
+              <label>Preço (%)</label>
+              <input id="pes-preco" type="number" value="-8" step="1" />
+              <label>Custos variáveis (%)</label>
+              <input id="pes-cv" type="number" value="10" step="1" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h3>Resultado dos cenários</h3>
+          <div class="table-wrapper">
+            <table id="tabela-cenarios">
+              <thead>
+                <tr>
+                  <th>Cenário</th>
+                  <th>Receita (R$)</th>
+                  <th>Custos totais (R$)</th>
+                  <th>Lucro operacional (R$)</th>
+                  <th>Margem (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Otimista</td>
+                  <td id="opt-rec">-</td>
+                  <td id="opt-custos">-</td>
+                  <td id="opt-lucro">-</td>
+                  <td id="opt-margem">-</td>
+                </tr>
+                <tr>
+                  <td>Realista</td>
+                  <td id="real-rec">-</td>
+                  <td id="real-custos">-</td>
+                  <td id="real-lucro">-</td>
+                  <td id="real-margem">-</td>
+                </tr>
+                <tr>
+                  <td>Pessimista</td>
+                  <td id="pes-rec">-</td>
+                  <td id="pes-custos">-</td>
+                  <td id="pes-lucro">-</td>
+                  <td id="pes-margem">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="chart-container">
+            <div class="bar">
+              <div class="bar-value" id="opt-lucro-label">R$ 0</div>
+              <div class="bar-inner" id="bar-opt"></div>
+              <div class="bar-label">Otimista</div>
+            </div>
+            <div class="bar">
+              <div class="bar-value" id="real-lucro-label">R$ 0</div>
+              <div class="bar-inner" id="bar-real"></div>
+              <div class="bar-label">Realista</div>
+            </div>
+            <div class="bar">
+              <div class="bar-value" id="pes-lucro-label">R$ 0</div>
+              <div class="bar-inner" id="bar-pes"></div>
+              <div class="bar-label">Pessimista</div>
+            </div>
+          </div>
+          <div class="legend">
+            As barras mostram o lucro operacional por cenário em um período. Lucro negativo gera barra em vermelho.
+          </div>
+
+          <div class="line-chart-wrapper">
+            <h3>Evolução fictícia do lucro por cenário</h3>
+            <canvas id="linha-cenarios"></canvas>
+            <div class="legend">
+              O gráfico de linha usa seis períodos fictícios e aplica variação em torno do lucro calculado. A linha verde representa o cenário otimista, a linha azul o cenário realista e a linha amarela o cenário pessimista.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-text">
+      O modelo conecta planejamento de receitas e despesas, gestão orçamentária, produtividade e marketing. Alterações nas premissas permitem análise de continuidade, efeitos de investimentos e impactos em risco para a cooperativa.
+    </div>
+  </div>
+
+  <script>
+    function lerNumero(id) {
+      var v = parseFloat(document.getElementById(id).value);
+      if (isNaN(v)) return 0;
+      return v;
+    }
+
+    function formatarMoeda(v) {
+      return "R$ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function formatarPercent(v) {
+      return v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " %";
+    }
+
+    function aplicarPercentual(base, percentual) {
+      return base * (1 + percentual / 100);
+    }
+
+    function calcularCenario(nome, volPctId, precoPctId, cvPctId, base) {
+      var volPct = lerNumero(volPctId);
+      var precoPct = lerNumero(precoPctId);
+      var cvPct = lerNumero(cvPctId);
+
+      var volume = aplicarPercentual(base.volume, volPct);
+      var preco = aplicarPercentual(base.preco, precoPct);
+      var custoVarUnit = aplicarPercentual(base.custoVar, cvPct);
+
+      var receita = volume * preco;
+
+      var ganhoProd = base.produtividade / 100;
+      var fatorProd = 1 - ganhoProd;
+      if (fatorProd < 0.5) fatorProd = 0.5;
+
+      var custoVarTotal = volume * custoVarUnit;
+      var custosFixosAjustados = base.custoFixo * fatorProd;
+
+      var efeitoMarketing = base.marketing * 2;
+      var receitaComMarketing = receita + efeitoMarketing;
+
+      var custosTotais = custoVarTotal + custosFixosAjustados + base.marketing;
+      var lucro = receitaComMarketing - custosTotais;
+
+      var margem = receitaComMarketing === 0 ? 0 : (lucro / receitaComMarketing) * 100;
+
+      return {
+        nome: nome,
+        volume: volume,
+        receita: receitaComMarketing,
+        custosTotais: custosTotais,
+        lucro: lucro,
+        margem: margem
+      };
+    }
+
+    function atualizarTabela(cenario, prefixo) {
+      document.getElementById(prefixo + "-rec").textContent = formatarMoeda(cenario.receita);
+      document.getElementById(prefixo + "-custos").textContent = formatarMoeda(cenario.custosTotais);
+      document.getElementById(prefixo + "-lucro").textContent = formatarMoeda(cenario.lucro);
+      document.getElementById(prefixo + "-margem").textContent = formatarPercent(cenario.margem);
+    }
+
+    function atualizarBarras(cOpt, cReal, cPes) {
+      var lucros = [cOpt.lucro, cReal.lucro, cPes.lucro];
+      var maxAbs = Math.max(
+        Math.abs(lucros[0]),
+        Math.abs(lucros[1]),
+        Math.abs(lucros[2]),
+        1
+      );
+
+      function setBar(barId, labelId, lucro, corPositiva, corNegativa) {
+        var alturaMax = 130;
+        var altura = Math.round(Math.abs(lucro) / maxAbs * alturaMax);
+        var bar = document.getElementById(barId);
+        var label = document.getElementById(labelId);
+        bar.style.height = altura + "px";
+        bar.style.background = lucro >= 0 ? corPositiva : corNegativa;
+        label.textContent = formatarMoeda(lucro);
+      }
+
+      setBar("bar-opt", "opt-lucro-label", cOpt.lucro, "#2e7d32", "#c62828");
+      setBar("bar-real", "real-lucro-label", cReal.lucro, "#1976d2", "#c62828");
+      setBar("bar-pes", "pes-lucro-label", cPes.lucro, "#f9a825", "#c62828");
+    }
+
+    function gerarSerie(lucroBase) {
+      return [
+        lucroBase * 0.6,
+        lucroBase * 0.8,
+        lucroBase * 1.0,
+        lucroBase * 1.1,
+        lucroBase * 1.05,
+        lucroBase * 1.0
+      ];
+    }
+
+    function desenharGraficoLinha(serieOpt, serieReal, seriePes) {
+      var canvas = document.getElementById("linha-cenarios");
+      if (!canvas) return;
+      var ctx = canvas.getContext("2d");
+
+      var largura = canvas.clientWidth || canvas.parentElement.clientWidth || 400;
+      var altura = canvas.clientHeight || 220;
+
+      canvas.width = largura;
+      canvas.height = altura;
+
+      var todas = serieOpt.concat(serieReal).concat(seriePes);
+      var maxVal = Math.max.apply(null, todas);
+      var minVal = Math.min.apply(null, todas);
+
+      if (maxVal === minVal) {
+        maxVal = maxVal + 1;
+        minVal = minVal - 1;
+      }
+
+      var paddingLeft = 40;
+      var paddingRight = 16;
+      var paddingTop = 10;
+      var paddingBottom = 24;
+
+      function xPos(index, total) {
+        var disp = largura - paddingLeft - paddingRight;
+        if (total <= 1) return paddingLeft;
+        return paddingLeft + (disp * index) / (total - 1);
+      }
+
+      function yPos(valor) {
+        var disp = altura - paddingTop - paddingBottom;
+        return paddingTop + (maxVal - valor) * (disp / (maxVal - minVal));
+      }
+
+      ctx.clearRect(0, 0, largura, altura);
+
+      ctx.strokeStyle = "#cccccc";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(paddingLeft, paddingTop);
+      ctx.lineTo(paddingLeft, altura - paddingBottom);
+      ctx.lineTo(largura - paddingRight, altura - paddingBottom);
+      ctx.stroke();
+
+      ctx.font = "10px Arial";
+      ctx.fillStyle = "#555555";
+      var meses = ["1", "2", "3", "4", "5", "6"];
+      for (var i = 0; i < meses.length; i++) {
+        var x = xPos(i, meses.length);
+        var y = altura - paddingBottom;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y + 4);
+        ctx.strokeStyle = "#bbbbbb";
+        ctx.stroke();
+        ctx.fillText(meses[i], x - 3, y + 14);
+      }
+
+      ctx.fillText(formatarMoeda(Math.round(maxVal)), 2, yPos(maxVal) + 3);
+      ctx.fillText(formatarMoeda(Math.round(minVal)), 2, yPos(minVal) + 3);
+
+      function desenharSerie(serie, cor) {
+        ctx.beginPath();
+        for (var i = 0; i < serie.length; i++) {
+          var x = xPos(i, serie.length);
+          var y = yPos(serie[i]);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = cor;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      desenharSerie(serieOpt, "#2e7d32");
+      desenharSerie(serieReal, "#1976d2");
+      desenharSerie(seriePes, "#f9a825");
+    }
+
+    function recalcular() {
+      var base = {
+        volume: lerNumero("volume"),
+        preco: lerNumero("preco"),
+        custoVar: lerNumero("custoVar"),
+        custoFixo: lerNumero("custoFixo"),
+        marketing: lerNumero("marketing"),
+        produtividade: lerNumero("produtividade")
+      };
+
+      var cenarioOtimista = calcularCenario("Otimista", "opt-vol", "opt-preco", "opt-cv", base);
+      var cenarioRealista = calcularCenario("Realista", "real-vol", "real-preco", "real-cv", base);
+      var cenarioPessimista = calcularCenario("Pessimista", "pes-vol", "pes-preco", "pes-cv", base);
+
+      atualizarTabela(cenarioOtimista, "opt");
+      atualizarTabela(cenarioRealista, "real");
+      atualizarTabela(cenarioPessimista, "pes");
+
+      atualizarBarras(cenarioOtimista, cenarioRealista, cenarioPessimista);
+
+      var serieOpt = gerarSerie(cenarioOtimista.lucro);
+      var serieReal = gerarSerie(cenarioRealista.lucro);
+      var seriePes = gerarSerie(cenarioPessimista.lucro);
+
+      desenharGraficoLinha(serieOpt, serieReal, seriePes);
+    }
+
+    function resetar() {
+      document.getElementById("volume").value = 80;
+      document.getElementById("preco").value = 900;
+      document.getElementById("custoVar").value = 550;
+      document.getElementById("custoFixo").value = 30000;
+      document.getElementById("marketing").value = 3000;
+      document.getElementById("produtividade").value = 10;
+
+      document.getElementById("opt-vol").value = 20;
+      document.getElementById("opt-preco").value = 5;
+      document.getElementById("opt-cv").value = -5;
+
+      document.getElementById("real-vol").value = 0;
+      document.getElementById("real-preco").value = 0;
+      document.getElementById("real-cv").value = 0;
+
+      document.getElementById("pes-vol").value = -25;
+      document.getElementById("pes-preco").value = -8;
+      document.getElementById("pes-cv").value = 10;
+
+      recalcular();
+    }
+
+    window.addEventListener("load", recalcular);
+    window.addEventListener("resize", function () {
+      recalcular();
+    });
+  </script>
+</body>
+</html>
